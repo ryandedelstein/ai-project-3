@@ -42,7 +42,7 @@ class Network(object):
         return a
 
     def SGD(self, training_data, epochs, mini_batch_size, eta,
-            test_data=None):
+            test_data=None, validation_data=None):
         """Train the neural network using mini-batch stochastic
         gradient descent.  The ``training_data`` is a list of tuples
         ``(x, y)`` representing the training inputs and the desired
@@ -62,7 +62,16 @@ class Network(object):
                 self.update_mini_batch(mini_batch, eta)
             if test_data:
                 print (("Epoch {0}: {1} / {2}").format(
-                    j, self.evaluate(test_data), n_test))
+                   j, self.evaluate(test_data), n_test))
+
+                # curr = self.evaluate(validation_data)
+                # print (("Epoch {0} results").format(j))
+                # for i in curr:
+                #     line = ""
+                #     for k in i:
+                #         line = line + str(k) + "  "
+                #     print(line)
+                        
             else:
                 print ("Epoch {0} complete").format(j)
 
@@ -122,8 +131,22 @@ class Network(object):
         network outputs the correct result. Note that the neural
         network's output is assumed to be the index of whichever
         neuron in the final layer has the highest activation."""
+
+
         test_results = [(np.argmax(self.feedforward(x)), y)
                         for (x, y) in test_data]
+        
+        # ret = []
+        # for i in range(10):
+        #     curr = []
+        #     for j in range(10):
+        #         curr.append(0)
+        #     ret.append(curr)
+        
+        # for (x,y) in test_results:
+        #     ret[x][y] = ret[x][y] + 1
+    
+        # return ret
         return sum(int(x == y) for (x, y) in test_results)
 
     def cost_derivative(self, output_activations, y):
